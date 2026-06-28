@@ -1,34 +1,31 @@
 import { StyleSheet } from "react-native";
+
+import type { Artifact } from "@/types/artifact";
+
 import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
 
 type ArtifactCardProps = {
-    id: string;
-    title: string;
-    description: string;
-    metadata: string;
+    artifact: Artifact;
 };
 
-export function ArtifactCard({
-    id,
-    title,
-    description,
-    metadata,
-}: ArtifactCardProps) {
+export function ArtifactCard({ artifact }: ArtifactCardProps) {
     return (
         <ThemedView type="backgroundElement" style={styles.card}>
-            <ThemedText type="code">{id}</ThemedText>
+            <ThemedText type="code">
+                #{artifact.id.toString().padStart(5, "0")}
+            </ThemedText>
 
             <ThemedText type="smallBold">
-                {title}
+                {artifact.title}
             </ThemedText>
 
             <ThemedText type="small" numberOfLines={2}>
-                {description}
+                {artifact.description}
             </ThemedText>
 
             <ThemedText type="small">
-                {metadata}
+                {artifact.updatedAt}
             </ThemedText>
         </ThemedView>
     );
