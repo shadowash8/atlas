@@ -1,7 +1,7 @@
-import { Button, StyleSheet } from 'react-native';
+import { Button, StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/themed-view';
-import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useSQLiteContext } from "@/db/database";
 import { createArtifact, getArtifacts } from '@/db/artifacts';
 import Artifacts from '@/components/ui/artifacts';
@@ -11,6 +11,8 @@ import { ThemedText } from '@/components/themed-text';
 
 export default function HomeScreen() {
     const db = useSQLiteContext();
+    const scheme = useColorScheme();
+    const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
 
     const [artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -40,6 +42,7 @@ export default function HomeScreen() {
                 />
                 <Button
                     title="Add"
+                    color={colors.accent}
                     onPress={async () => {
                         await createArtifact(
                             db,
