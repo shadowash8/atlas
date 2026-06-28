@@ -1,84 +1,55 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { ArtifactCard } from '@/components/artifact-card';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+const artifacts = [
+    {
+        id: "#7KF2A",
+        title: "Passport",
+        description: "Indian passport with visa documents...",
+        metadata: "28 Jun 2026 • 3 attachments",
+    },
+    {
+        id: "#AB813",
+        title: "ESP32",
+        description: "Development board with OLED display...",
+        metadata: "Today • 5 attachments",
+    },
+    {
+        id: "#91DF2",
+        title: "Bike Service",
+        description: "Invoice and replacement parts...",
+        metadata: "Yesterday • 2 attachments",
+    },
+];
 
 export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Atlas
-          </ThemedText>
+    return (
+        <ThemedView style={styles.container}>
+            <SafeAreaView style={styles.safeArea}>
+                {artifacts.map((artifact) => (
+                    <ArtifactCard
+                        key={artifact.id}
+                        {...artifact}
+                    />
+                ))}
+            </SafeAreaView>
         </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-      </SafeAreaView>
-    </ThemedView>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    safeArea: {
+        flex: 1,
+        padding: Spacing.four,
+        gap: Spacing.three,
+        maxWidth: MaxContentWidth,
+    },
 });
