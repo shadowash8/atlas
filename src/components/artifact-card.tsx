@@ -1,7 +1,5 @@
 import { StyleSheet } from "react-native";
-
 import type { Artifact } from "@/types/artifact";
-
 import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
 

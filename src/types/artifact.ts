@@ -8,5 +8,5 @@ export interface Artifact {
     updatedAt: string;
 
     favorite: boolean;
-    color?: string | null;
+    color: string | null;
 }
