@@ -20,7 +20,7 @@ export default function Artifacts({
             data={artifacts}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <ArtifactCard artifact={item} />
+                <ArtifactCard artifact={item} refresh={onRefresh} />
             )}
             refreshing={refreshing}
             onRefresh={onRefresh}
