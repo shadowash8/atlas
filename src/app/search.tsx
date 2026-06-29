@@ -53,7 +53,7 @@ export default function SearchScreen() {
     }, [artifacts, query]);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={["top"]}>
             <ThemedView style={styles.container}>
                 <ThemedText type="title" style={styles.heading}>
                     Search
