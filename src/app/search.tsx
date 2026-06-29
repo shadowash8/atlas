@@ -18,7 +18,6 @@ import {
     MaxContentWidth,
     Spacing,
 } from "@/constants/theme";
-import { ThemedInput } from "@/components/themed-input";
 import { useColorScheme } from "react-native";
 import { useFocusEffect } from "expo-router";
 
@@ -123,8 +122,6 @@ export default function SearchScreen() {
                             <ThemedText type="subtitle">
                                 No artifacts found
                             </ThemedText>
-
-                            <ThemedInput />
                         </ThemedView>
                     }
                 />
