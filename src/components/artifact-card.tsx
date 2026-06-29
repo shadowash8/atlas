@@ -19,7 +19,7 @@ export function ArtifactCard({ artifact }: ArtifactCardProps) {
                     ]}
                 >
                     <ThemedText type="code">
-                        #{artifact.id.toString().padStart(5, "0")}
+                        #{artifact.id}
                     </ThemedText>
 
                     <ThemedText type="smallBold">

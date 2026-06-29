@@ -20,7 +20,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
             PRAGMA journal_mode = WAL;
 
             CREATE TABLE IF NOT EXISTS artifacts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id TEXT PRIMARY KEY NOT NULL,
             
                 title TEXT NOT NULL,
                 description TEXT,
@@ -35,7 +35,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
             CREATE TABLE IF NOT EXISTS attachments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
             
-                artifact_id INTEGER NOT NULL,
+                artifact_id TEXT NOT NULL,
             
                 name TEXT NOT NULL,
                 uri TEXT NOT NULL,

@@ -1,5 +1,6 @@
 import type { SQLiteDatabase } from "expo-sqlite";
 import type { Artifact } from "@/types/artifact";
+import { generateArtifactId } from "@/hooks/crypto";
 
 export async function createArtifact(
     db: SQLiteDatabase,
@@ -7,13 +8,16 @@ export async function createArtifact(
     description = ""
 ) {
     const now = new Date().toISOString();
+    const uniqueId = generateArtifactId();
+    console.log(uniqueId)
 
-    const result = await db.runAsync(
+    await db.runAsync(
         `
       INSERT INTO artifacts
-      (title, description, created_at, updated_at, favorite, color)
-      VALUES (?, ?, ?, ?, ?, ?)
+      (id, title, description, created_at, updated_at, favorite, color)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `,
+        uniqueId,
         title,
         description,
         now,
@@ -22,7 +26,7 @@ export async function createArtifact(
         null
     );
 
-    return result.lastInsertRowId;
+    return uniqueId;
 }
 
 export async function getArtifacts(
@@ -43,13 +47,14 @@ export async function getArtifacts(
 
     return rows.map(row => ({
         ...row,
+        id: String(row.id),
         favorite: Boolean(row.favorite),
     }));
 }
 
 export async function getArtifact(
     db: SQLiteDatabase,
-    id: number
+    id: string
 ) {
     return db.getFirstAsync<Artifact>(
         `
@@ -94,7 +99,7 @@ export async function updateArtifact(
 
 export async function deleteArtifact(
     db: SQLiteDatabase,
-    id: number
+    id: string
 ) {
     await db.runAsync(
         `DELETE FROM artifacts WHERE id = ?`,
