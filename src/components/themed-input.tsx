@@ -5,7 +5,6 @@ import {
     TextInput,
     TextInputProps,
     TextStyle,
-    View,
     ViewStyle,
     useColorScheme,
 } from "react-native";
@@ -24,29 +23,22 @@ export const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
             Colors[scheme === "unspecified" ? "light" : scheme];
 
         return (
-            <View
+            <TextInput
+                ref={ref}
+                {...props}
+                placeholderTextColor={colors.textSecondary}
+                selectionColor={colors.accentSoft}
+                cursorColor={colors.accent}
                 style={[
                     styles.container,
                     {
+                        color: colors.text,
                         backgroundColor: colors.backgroundElement,
                         borderColor: colors.accentSoft,
                     },
-                    containerStyle,
+                    inputStyle,
                 ]}
-            >
-                <TextInput
-                    ref={ref}
-                    {...props}
-                    placeholderTextColor={colors.textSecondary}
-                    selectionColor={colors.accentSoft}
-                    cursorColor={colors.accentSoft}
-                    style={[
-                        styles.input,
-                        { color: colors.text },
-                        inputStyle,
-                    ]}
-                />
-            </View>
+            />
         );
     }
 );
@@ -55,15 +47,9 @@ ThemedInput.displayName = "ThemedInput";
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 16,
+        borderRadius: 8,
         borderWidth: 1,
-
-        paddingHorizontal: Spacing.four,
-        paddingVertical: 14,
-    },
-
-    input: {
-        fontSize: 16,
-        padding: 0,
+        paddingHorizontal: Spacing.two,
+        minWidth: 600
     },
 });

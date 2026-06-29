@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { Artifact } from '@/types/artifact';
 import { ThemedText } from '@/components/themed-text';
 import { Ionicons } from '@expo/vector-icons';
+import AddArtifactSheet from '@/components/add-artifact-sheet';
 
 export default function HomeScreen() {
     const db = useSQLiteContext();
@@ -17,6 +18,7 @@ export default function HomeScreen() {
 
     const [artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [sheetOpen, setSheetOpen] = useState(false);
 
     async function refresh() {
         setRefreshing(true);
@@ -44,6 +46,14 @@ export default function HomeScreen() {
                         paddingBottom: 88,
                     }}
                 />
+                <AddArtifactSheet
+                    isPresented={sheetOpen}
+                    onDismiss={() => setSheetOpen(false)}
+                    onSave={async (title, description) => {
+                        await createArtifact(db, title, description);
+                        await refresh();
+                    }}
+                />
                 <Pressable
                     style={({ pressed }) => [
                         styles.fab,
@@ -52,15 +62,7 @@ export default function HomeScreen() {
                         },
                         pressed && styles.fabPressed,
                     ]}
-                    onPress={async () => {
-                        await createArtifact(
-                            db,
-                            "Laptop Specs",
-                            "Dell Latitude 5420 fastfetch",
-                        );
-
-                        await refresh();
-                    }}
+                    onPress={() => setSheetOpen(true)}
                 >
                     <Ionicons name="add" size={30} color="white" />
                 </Pressable>
