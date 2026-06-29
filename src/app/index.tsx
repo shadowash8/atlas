@@ -1,13 +1,13 @@
-import { Button, StyleSheet, useColorScheme } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { ThemedView } from '@/components/themed-view';
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Colors, Spacing } from '@/constants/theme';
 import { useSQLiteContext } from "@/db/database";
 import { createArtifact, getArtifacts } from '@/db/artifacts';
 import Artifacts from '@/components/ui/artifacts';
 import { useEffect, useState } from 'react';
 import { Artifact } from '@/types/artifact';
 import { ThemedText } from '@/components/themed-text';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
     const db = useSQLiteContext();
@@ -33,27 +33,35 @@ export default function HomeScreen() {
 
     return (
         <ThemedView style={styles.container}>
-            <SafeAreaView style={styles.safeArea}>
-                <ThemedText type="title" style={styles.heading}>Atlas</ThemedText>
-                <Artifacts
-                    artifacts={artifacts}
-                    refreshing={refreshing}
-                    onRefresh={refresh}
-                />
-                <Button
-                    title="Add"
-                    color={colors.accent}
-                    onPress={async () => {
-                        await createArtifact(
-                            db,
-                            "Passport",
-                            "Indian passport with visa documents",
-                        );
+            <ThemedText type="title" style={styles.heading}>Atlas</ThemedText>
+            <Artifacts
+                artifacts={artifacts}
+                refreshing={refreshing}
+                onRefresh={refresh}
+                contentContainerStyle={{
+                    paddingBottom: 88,
+                }}
+            />
+            <Pressable
+                style={({ pressed }) => [
+                    styles.fab,
+                    {
+                        backgroundColor: colors.accent,
+                    },
+                    pressed && styles.fabPressed,
+                ]}
+                onPress={async () => {
+                    await createArtifact(
+                        db,
+                        "Passport",
+                        "Indian passport with visa documents",
+                    );
 
-                        await refresh(); // optional, immediately updates after adding
-                    }}
-                />
-            </SafeAreaView>
+                    await refresh();
+                }}
+            >
+                <Ionicons name="add" size={30} color="white" />
+            </Pressable>
         </ThemedView>
     );
 }
@@ -61,16 +69,29 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        flexDirection: 'row',
-    },
-    safeArea: {
-        flex: 1,
-        padding: Spacing.four,
-        gap: Spacing.three,
-        maxWidth: MaxContentWidth,
+        paddingHorizontal: Spacing.four,
+        paddingTop: Spacing.five,
     },
     heading: {
         marginBottom: Spacing.two
-    }
+    },
+    fab: {
+        position: "absolute",
+        right: 24,
+        bottom: 24,
+
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+
+        alignItems: "center",
+        justifyContent: "center",
+
+        elevation: 6, // Android shadow
+    },
+
+    fabPressed: {
+        opacity: 0.85,
+        transform: [{ scale: 0.96 }],
+    },
 });

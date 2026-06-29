@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { FlatList, StyleProp, ViewStyle } from "react-native";
 import { Artifact } from "@/types/artifact";
 import { ArtifactCard } from "../artifact-card";
 
@@ -6,12 +6,14 @@ type ArtifactsProps = {
     artifacts: Artifact[];
     refreshing: boolean;
     onRefresh: () => void | Promise<void>;
+    contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
 export default function Artifacts({
     artifacts,
     refreshing,
     onRefresh,
+    contentContainerStyle,
 }: ArtifactsProps) {
     return (
         <FlatList
@@ -22,6 +24,7 @@ export default function Artifacts({
             )}
             refreshing={refreshing}
             onRefresh={onRefresh}
+            contentContainerStyle={contentContainerStyle}
         />
     );
 }
