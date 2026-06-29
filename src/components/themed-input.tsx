@@ -29,7 +29,7 @@ export const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
                     styles.container,
                     {
                         backgroundColor: colors.backgroundElement,
-                        borderColor: colors.border,
+                        borderColor: colors.accentSoft,
                     },
                     containerStyle,
                 ]}
@@ -38,8 +38,8 @@ export const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
                     ref={ref}
                     {...props}
                     placeholderTextColor={colors.textSecondary}
-                    selectionColor={colors.tint}
-                    cursorColor={colors.tint}
+                    selectionColor={colors.accentSoft}
+                    cursorColor={colors.accentSoft}
                     style={[
                         styles.input,
                         { color: colors.text },
@@ -56,7 +56,7 @@ ThemedInput.displayName = "ThemedInput";
 const styles = StyleSheet.create({
     container: {
         borderRadius: 16,
-        borderWidth: StyleSheet.hairlineWidth,
+        borderWidth: 1,
 
         paddingHorizontal: Spacing.four,
         paddingVertical: 14,
