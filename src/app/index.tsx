@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedView } from '@/components/themed-view';
 import { Colors, Spacing } from '@/constants/theme';
 import { useSQLiteContext } from "@/db/database";
@@ -32,48 +33,53 @@ export default function HomeScreen() {
     }, []);
 
     return (
-        <ThemedView style={styles.container}>
-            <ThemedText type="title" style={styles.heading}>Atlas</ThemedText>
-            <Artifacts
-                artifacts={artifacts}
-                refreshing={refreshing}
-                onRefresh={refresh}
-                contentContainerStyle={{
-                    paddingBottom: 88,
-                }}
-            />
-            <Pressable
-                style={({ pressed }) => [
-                    styles.fab,
-                    {
-                        backgroundColor: colors.accent,
-                    },
-                    pressed && styles.fabPressed,
-                ]}
-                onPress={async () => {
-                    await createArtifact(
-                        db,
-                        "Passport",
-                        "Indian passport with visa documents",
-                    );
+        <SafeAreaView style={styles.safeArea}>
+            <ThemedView style={styles.container}>
+                <ThemedText type="title" style={styles.heading}>Atlas</ThemedText>
+                <Artifacts
+                    artifacts={artifacts}
+                    refreshing={refreshing}
+                    onRefresh={refresh}
+                    contentContainerStyle={{
+                        paddingBottom: 88,
+                    }}
+                />
+                <Pressable
+                    style={({ pressed }) => [
+                        styles.fab,
+                        {
+                            backgroundColor: colors.accent,
+                        },
+                        pressed && styles.fabPressed,
+                    ]}
+                    onPress={async () => {
+                        await createArtifact(
+                            db,
+                            "Laptop Specs",
+                            "Dell Latitude 5420 fastfetch",
+                        );
 
-                    await refresh();
-                }}
-            >
-                <Ionicons name="add" size={30} color="white" />
-            </Pressable>
-        </ThemedView>
+                        await refresh();
+                    }}
+                >
+                    <Ionicons name="add" size={30} color="white" />
+                </Pressable>
+            </ThemedView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+    },
     container: {
         flex: 1,
         paddingHorizontal: Spacing.four,
-        paddingTop: Spacing.five,
+        paddingTop: Spacing.two,
     },
     heading: {
-        marginBottom: Spacing.two
+        marginBottom: Spacing.three
     },
     fab: {
         position: "absolute",
