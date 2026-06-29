@@ -4,8 +4,9 @@ import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
 import { useState } from "react";
 import { BottomSheet, Button } from "@expo/ui";
-import { deleteArtifact } from "@/db/artifacts";
+import { deleteArtifact, updateArtifact } from "@/db/artifacts";
 import { useSQLiteContext } from "expo-sqlite";
+import EditArtifactSheet from "./edit-artifact-sheet";
 
 type ArtifactCardProps = {
     artifact: Artifact;
@@ -15,11 +16,22 @@ type ArtifactCardProps = {
 export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
     const db = useSQLiteContext();
     const [sheet, setSheet] = useState(false);
+    const [editSheet, setEditSheet] = useState(false);
 
     const deleteItem = () => {
         deleteArtifact(db, artifact.id);
         refresh();
     }
+
+    const handleSaveUpdate = async (updatedFields: Partial<Artifact>) => {
+        const finalPayload: Artifact = {
+            ...artifact,
+            ...updatedFields,
+        };
+
+        await updateArtifact(db, finalPayload);
+        await refresh();
+    };
     return (
         <Pressable onLongPress={() => setSheet(true)}>
             {({ pressed }) => (
@@ -46,11 +58,26 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                         {artifact.updatedAt}
                     </ThemedText>
 
+                    <EditArtifactSheet
+                        isPresented={editSheet}
+                        onDismiss={() => setEditSheet(false)}
+                        onSave={handleSaveUpdate}
+                        passedArtifact={artifact}
+                    />
                     <BottomSheet
                         isPresented={sheet}
                         onDismiss={() => setSheet(false)}
                         snapPoints={["half"]}
                     >
+                        <Button
+                            label="Edit"
+                            onPress={() => {
+                                setSheet(false);
+                                setEditSheet(true);
+                            }}
+                            variant="text"
+                            style={styles.listItem}
+                        />
                         <Button label="Delete" onPress={() => deleteItem()} variant="text" style={styles.listItem} />
                     </BottomSheet>
                 </ThemedView>
