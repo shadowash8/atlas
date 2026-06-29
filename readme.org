@@ -1,3 +1,7 @@
 * Atlas
 
 *Atlas* is a all in one application to store and tag data for referencing
+
+| Home                              | Search                              |
+|-----------------------------------+-------------------------------------|
+| [[/assets/screenshots/page_home.png]] | [[/assets/screenshots/page_search.png]] |
