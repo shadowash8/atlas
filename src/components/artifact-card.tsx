@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import type { Artifact } from "@/types/artifact";
 import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
@@ -9,23 +9,33 @@ type ArtifactCardProps = {
 
 export function ArtifactCard({ artifact }: ArtifactCardProps) {
     return (
-        <ThemedView type="backgroundElement" style={styles.card}>
-            <ThemedText type="code">
-                #{artifact.id.toString().padStart(5, "0")}
-            </ThemedText>
+        <Pressable>
+            {({ pressed }) => (
+                <ThemedView
+                    type="backgroundElement"
+                    style={[
+                        styles.card,
+                        pressed && styles.cardPressed,
+                    ]}
+                >
+                    <ThemedText type="code">
+                        #{artifact.id.toString().padStart(5, "0")}
+                    </ThemedText>
 
-            <ThemedText type="smallBold">
-                {artifact.title}
-            </ThemedText>
+                    <ThemedText type="smallBold">
+                        {artifact.title}
+                    </ThemedText>
 
-            <ThemedText type="small" numberOfLines={2}>
-                {artifact.description}
-            </ThemedText>
+                    <ThemedText type="small" numberOfLines={2}>
+                        {artifact.description}
+                    </ThemedText>
 
-            <ThemedText type="small">
-                {artifact.updatedAt}
-            </ThemedText>
-        </ThemedView>
+                    <ThemedText type="small">
+                        {artifact.updatedAt}
+                    </ThemedText>
+                </ThemedView>
+            )}
+        </Pressable>
     );
 }
 
@@ -35,5 +45,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         gap: 6,
         marginBottom: 12,
+    },
+    cardPressed: {
+        opacity: 0.85,
     },
 });
