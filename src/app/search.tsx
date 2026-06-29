@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         width: "100%",
         maxWidth: MaxContentWidth,
-        paddingBottom: 100,
+        paddingBottom: Spacing.three,
     },
     searchBar: {
         flexDirection: "row",
