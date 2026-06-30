@@ -17,6 +17,7 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
     const db = useSQLiteContext();
     const [sheet, setSheet] = useState(false);
     const [editSheet, setEditSheet] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const deleteItem = () => {
         deleteArtifact(db, artifact.id);
@@ -33,7 +34,9 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
         await refresh();
     };
     return (
-        <Pressable onLongPress={() => setSheet(true)}>
+        <Pressable
+            onPress={() => setIsExpanded(!isExpanded)}
+            onLongPress={() => setSheet(true)}>
             {({ pressed }) => (
                 <ThemedView
                     type="backgroundElement"
@@ -50,7 +53,7 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                         {artifact.title}
                     </ThemedText>
 
-                    <ThemedText type="small" numberOfLines={2}>
+                    <ThemedText type="small" numberOfLines={isExpanded ? 0 : 2}>
                         {artifact.description}
                     </ThemedText>
 
