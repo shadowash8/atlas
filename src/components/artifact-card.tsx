@@ -39,7 +39,7 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
             onLongPress={() => setSheet(true)}>
             {({ pressed }) => (
                 <ThemedView
-                    type="backgroundElement"
+                    type="surfaceContainer"
                     style={[
                         styles.card,
                         pressed && styles.cardPressed,

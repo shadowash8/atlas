@@ -6,11 +6,9 @@ import {
     TextInputProps,
     TextStyle,
     ViewStyle,
-    useColorScheme,
 } from "react-native";
-
-import { Colors, Spacing } from "@/constants/theme";
-
+import { Spacing } from "@/constants/theme";
+import { useMaterialColors } from "@expo/ui/jetpack-compose";
 type ThemedInputProps = TextInputProps & {
     containerStyle?: StyleProp<ViewStyle>;
     inputStyle?: StyleProp<TextStyle>;
@@ -18,23 +16,21 @@ type ThemedInputProps = TextInputProps & {
 
 export const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
     ({ containerStyle, inputStyle, ...props }, ref) => {
-        const scheme = useColorScheme();
-        const colors =
-            Colors[scheme === "unspecified" ? "light" : scheme];
+        const colors = useMaterialColors();
 
         return (
             <TextInput
                 ref={ref}
                 {...props}
-                placeholderTextColor={colors.textSecondary}
-                selectionColor={colors.accentSoft}
-                cursorColor={colors.accent}
+                placeholderTextColor={colors.onSecondaryFixedVariant}
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
                 style={[
                     styles.container,
                     {
-                        color: colors.text,
-                        backgroundColor: colors.backgroundElement,
-                        borderColor: colors.accentSoft,
+                        color: colors.onSurface,
+                        backgroundColor: colors.surface,
+                        borderColor: colors.outlineVariant,
                     },
                     inputStyle,
                 ]}

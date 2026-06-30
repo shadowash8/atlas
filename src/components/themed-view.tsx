@@ -1,16 +1,26 @@
 import { View, type ViewProps } from 'react-native';
+import { useMaterialColors, type MaterialColors } from '@expo/ui/jetpack-compose';
 
-import { ThemeColor } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+export type MaterialColorType = keyof Omit<
+    MaterialColors,
+    'isDynamicColorAvailable' | 'getMaterialColors'
+>;
 
 export type ThemedViewProps = ViewProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: ThemeColor;
+    lightColor?: string;
+    darkColor?: string;
+    type?: MaterialColorType;
 };
 
 export function ThemedView({ style, lightColor, darkColor, type, ...otherProps }: ThemedViewProps) {
-  const theme = useTheme();
+    const colors = useMaterialColors();
 
-  return <View style={[{ backgroundColor: theme[type ?? 'background'] }, style]} {...otherProps} />;
+    const resolvedBackgroundColor = lightColor || darkColor || colors[type ?? 'background'];
+
+    return (
+        <View
+            style={[{ backgroundColor: resolvedBackgroundColor }, style]}
+            {...otherProps}
+        />
+    );
 }

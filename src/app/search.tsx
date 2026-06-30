@@ -14,18 +14,15 @@ import { ArtifactCard } from "@/components/artifact-card";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import {
-    Colors,
     MaxContentWidth,
     Spacing,
 } from "@/constants/theme";
-import { useColorScheme } from "react-native";
 import { useFocusEffect } from "expo-router";
+import { useMaterialColors } from "@expo/ui/jetpack-compose";
 
 export default function SearchScreen() {
     const db = useSQLiteContext();
-
-    const scheme = useColorScheme();
-    const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+    const colors = useMaterialColors();
 
     const [query, setQuery] = useState("");
     const [artifacts, setArtifacts] = useState<Artifact[]>([]);
@@ -60,23 +57,31 @@ export default function SearchScreen() {
                     Search
                 </ThemedText>
                 <ThemedView
-                    type="backgroundElement"
-                    style={styles.searchBar}
+                    style={[
+                        {
+                            backgroundColor: colors.surfaceContainer,
+                        },
+                        styles.searchBar,
+                    ]}
                 >
                     <Ionicons
                         name="search"
                         size={20}
-                        color={colors.textSecondary}
+                        color={colors.onSurface}
                     />
 
                     <TextInput
                         value={query}
                         onChangeText={setQuery}
                         placeholder="Search artifacts..."
-                        placeholderTextColor={colors.textSecondary}
+                        placeholderTextColor={colors.onSecondaryFixedVariant}
+                        selectionColor={colors.primary}
+                        cursorColor={colors.primary}
                         style={[
                             styles.input,
-                            { color: colors.text },
+                            {
+                                color: colors.onSurface,
+                            },
                         ]}
                     />
                 </ThemedView>
@@ -103,7 +108,7 @@ export default function SearchScreen() {
                         <>
                             {query.length > 0 && (
                                 <ThemedText
-                                    themeColor="textSecondary"
+                                    themeColor="onSurfaceVariant"
                                     style={styles.results}
                                 >
                                     {filteredArtifacts.length} result
@@ -117,7 +122,7 @@ export default function SearchScreen() {
                             <Ionicons
                                 name="search"
                                 size={48}
-                                color={colors.textSecondary}
+                                color={colors.primary}
                             />
 
                             <ThemedText type="subtitle">
@@ -138,7 +143,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: Spacing.four,
-        paddingTop: Spacing.two,
+        paddingTop: Spacing.three,
     },
     heading: {
         marginBottom: Spacing.three
@@ -155,8 +160,7 @@ const styles = StyleSheet.create({
         gap: Spacing.three,
 
         borderRadius: 16,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
+        padding: 16,
 
         marginBottom: Spacing.three
     },

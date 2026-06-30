@@ -43,7 +43,7 @@ export default function AddArtifactSheet({
                 </ThemedText>
 
                 <ThemedText
-                    themeColor="textSecondary"
+                    themeColor="secondary"
                     style={styles.description}
                 >
                     Save anything you want to remember later.

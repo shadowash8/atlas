@@ -7,14 +7,14 @@ import { createArtifact, getArtifacts } from '@/db/artifacts';
 import Artifacts from '@/components/ui/artifacts';
 import { useEffect, useState } from 'react';
 import { Artifact } from '@/types/artifact';
+import { useMaterialColors } from '@expo/ui/jetpack-compose';
 import { ThemedText } from '@/components/themed-text';
 import { Ionicons } from '@expo/vector-icons';
 import AddArtifactSheet from '@/components/add-artifact-sheet';
 
 export default function HomeScreen() {
     const db = useSQLiteContext();
-    const scheme = useColorScheme();
-    const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
+    const colors = useMaterialColors();
 
     const [artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -58,13 +58,13 @@ export default function HomeScreen() {
                     style={({ pressed }) => [
                         styles.fab,
                         {
-                            backgroundColor: colors.accent,
+                            backgroundColor: colors.primary,
                         },
                         pressed && styles.fabPressed,
                     ]}
                     onPress={() => setSheetOpen(true)}
                 >
-                    <Ionicons name="add" size={30} color="white" />
+                    <Ionicons name="add" size={30} color={colors.onPrimary} />
                 </Pressable>
             </ThemedView>
         </SafeAreaView>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: Spacing.four,
-        paddingTop: Spacing.two,
+        paddingTop: Spacing.three,
     },
     heading: {
         marginBottom: Spacing.three

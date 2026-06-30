@@ -1,24 +1,19 @@
 import { Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@/constants/theme";
+import { useMaterialColors } from "@expo/ui/jetpack-compose";
 
 export default function Layout() {
-    const scheme = useColorScheme();
-    const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
+    const colors = useMaterialColors();
 
     return (
         <Tabs
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: true,
-
                 tabBarStyle: {
                     backgroundColor: colors.background,
                 },
-
-                tabBarActiveTintColor: colors.text,
-                tabBarInactiveTintColor: colors.textSecondary,
+                tabBarActiveTintColor: colors.primary,
             }}
         >
             <Tabs.Screen
