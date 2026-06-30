@@ -7,6 +7,7 @@ import { BottomSheet, Button } from "@expo/ui";
 import { deleteArtifact, updateArtifact } from "@/db/artifacts";
 import { useSQLiteContext } from "expo-sqlite";
 import EditArtifactSheet from "./edit-artifact-sheet";
+import { LinkifiedText } from "./linkified-text";
 
 type ArtifactCardProps = {
     artifact: Artifact;
@@ -53,9 +54,12 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                         {artifact.title}
                     </ThemedText>
 
-                    <ThemedText type="small" numberOfLines={isExpanded ? 0 : 2}>
+                    <LinkifiedText
+                        type="small"
+                        numberOfLines={isExpanded ? 0 : 2}
+                    >
                         {artifact.description}
-                    </ThemedText>
+                    </LinkifiedText>
 
                     <ThemedText type="small">
                         {artifact.updatedAt}
