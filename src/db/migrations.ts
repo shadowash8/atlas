@@ -1,8 +1,5 @@
-// src/db/migrations.ts
-
 import type { SQLiteDatabase } from "expo-sqlite";
-
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     const result = await db.getFirstAsync<{ user_version: number }>(
@@ -24,7 +21,8 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
             
                 title TEXT NOT NULL,
                 description TEXT,
-            
+                tags TEXT NOT NULL DEFAULT '[]',
+
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL,
             
@@ -48,7 +46,16 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
             );
         `);
 
-        currentVersion = 1;
+        currentVersion = 2;
+    }
+
+    if (currentVersion === 1) {
+        await db.execAsync(`
+            ALTER TABLE artifacts
+            ADD COLUMN tags TEXT NOT NULL DEFAULT '[]';
+        `);
+
+        currentVersion = 2;
     }
 
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

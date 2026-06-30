@@ -46,7 +46,8 @@ export default function SearchScreen() {
             (artifact) =>
                 artifact.id.toLowerCase().includes(q) ||
                 artifact.title.toLowerCase().includes(q) ||
-                artifact.description.toLowerCase().includes(q)
+                artifact.description.toLowerCase().includes(q) ||
+                artifact.tags.some(tag => tag.toLowerCase().includes(q))
         );
     }, [artifacts, query]);
 

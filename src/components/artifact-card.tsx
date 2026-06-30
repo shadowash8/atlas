@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, StyleSheet } from "react-native";
+import { Dimensions, Pressable, StyleSheet, ScrollView } from "react-native";
 import type { Artifact } from "@/types/artifact";
 import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
@@ -8,6 +8,7 @@ import { deleteArtifact, updateArtifact } from "@/db/artifacts";
 import { useSQLiteContext } from "expo-sqlite";
 import EditArtifactSheet from "./edit-artifact-sheet";
 import { LinkifiedText } from "./linkified-text";
+import { Host, InputChip, Text, FlowRow } from "@expo/ui/jetpack-compose";
 
 type ArtifactCardProps = {
     artifact: Artifact;
@@ -34,62 +35,86 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
         await updateArtifact(db, finalPayload);
         await refresh();
     };
+
     return (
-        <Pressable
-            onPress={() => setIsExpanded(!isExpanded)}
-            onLongPress={() => setSheet(true)}>
-            {({ pressed }) => (
-                <ThemedView
-                    type="surfaceContainer"
-                    style={[
-                        styles.card,
-                        pressed && styles.cardPressed,
-                    ]}
+        <ThemedView
+            type="surfaceContainer"
+            style={[
+                styles.card,
+            ]}
+        >
+            <Pressable
+                style={({ pressed }) => [
+                    pressed && styles.cardPressed,
+                    styles.pressable
+                ]}
+                onPress={() => setIsExpanded(!isExpanded)}
+                onLongPress={() => setSheet(true)}>
+                <ThemedText type="code">
+                    #{artifact.id}
+                </ThemedText>
+
+                <ThemedText type="smallBold">
+                    {artifact.title}
+                </ThemedText>
+
+                <LinkifiedText
+                    type="small"
+                    numberOfLines={isExpanded ? 0 : 2}
                 >
-                    <ThemedText type="code">
-                        #{artifact.id}
-                    </ThemedText>
+                    {artifact.description}
+                </LinkifiedText>
 
-                    <ThemedText type="smallBold">
-                        {artifact.title}
-                    </ThemedText>
+                <ThemedText type="small">
+                    {artifact.updatedAt}
+                </ThemedText>
 
-                    <LinkifiedText
-                        type="small"
-                        numberOfLines={isExpanded ? 0 : 2}
-                    >
-                        {artifact.description}
-                    </LinkifiedText>
-
-                    <ThemedText type="small">
-                        {artifact.updatedAt}
-                    </ThemedText>
-
-                    <EditArtifactSheet
-                        isPresented={editSheet}
-                        onDismiss={() => setEditSheet(false)}
-                        onSave={handleSaveUpdate}
-                        passedArtifact={artifact}
+                <EditArtifactSheet
+                    isPresented={editSheet}
+                    onDismiss={() => setEditSheet(false)}
+                    onSave={handleSaveUpdate}
+                    passedArtifact={artifact}
+                />
+                <BottomSheet
+                    isPresented={sheet}
+                    onDismiss={() => setSheet(false)}
+                    snapPoints={["half"]}
+                >
+                    <Button
+                        label="Edit"
+                        onPress={() => {
+                            setSheet(false);
+                            setEditSheet(true);
+                        }}
+                        variant="text"
+                        style={styles.listItem}
                     />
-                    <BottomSheet
-                        isPresented={sheet}
-                        onDismiss={() => setSheet(false)}
-                        snapPoints={["half"]}
-                    >
-                        <Button
-                            label="Edit"
-                            onPress={() => {
-                                setSheet(false);
-                                setEditSheet(true);
-                            }}
-                            variant="text"
-                            style={styles.listItem}
-                        />
-                        <Button label="Delete" onPress={() => deleteItem()} variant="text" style={styles.listItem} />
-                    </BottomSheet>
-                </ThemedView>
-            )}
-        </Pressable>
+                    <Button label="Delete" onPress={() => deleteItem()} variant="text" style={styles.listItem} />
+                </BottomSheet>
+            </Pressable>
+
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+            >
+                {artifact.tags.length > 0 && (
+                    <Host matchContents>
+                        <FlowRow horizontalArrangement={{ spacedBy: 8 }}>
+                            {artifact.tags.map(tag => (
+                                <InputChip
+                                    key={tag}
+                                    selected
+                                >
+                                    <InputChip.Label>
+                                        <Text>{tag}</Text>
+                                    </InputChip.Label>
+                                </InputChip>
+                            ))}
+                        </FlowRow>
+                    </Host>
+                )}
+            </ScrollView>
+        </ThemedView>
     );
 }
 
@@ -97,8 +122,10 @@ const styles = StyleSheet.create({
     card: {
         padding: 16,
         borderRadius: 16,
-        gap: 6,
         marginBottom: 12,
+    },
+    pressable: {
+        gap: 8,
     },
     cardPressed: {
         opacity: 0.85,

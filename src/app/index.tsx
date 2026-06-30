@@ -49,8 +49,8 @@ export default function HomeScreen() {
                 <AddArtifactSheet
                     isPresented={sheetOpen}
                     onDismiss={() => setSheetOpen(false)}
-                    onSave={async (title, description) => {
-                        await createArtifact(db, title, description);
+                    onSave={async (title, description, tags) => {
+                        await createArtifact(db, title, description, tags);
                         await refresh();
                     }}
                 />

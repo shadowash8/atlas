@@ -4,20 +4,23 @@ export interface Artifact {
     title: string;
     description: string;
 
+    tags: string[];
+    attachments: Attachment[];
+
     createdAt: string;
     updatedAt: string;
 
     favorite: boolean;
-    color?: string | null;
+    color: string | null;
 }
 
 export interface Attachment {
     id: number;
 
-    artifactId: number;
+    artifactId: string;
 
     name: string;
     uri: string;
-    type: string;
+    type: "string";
     size: number;
 }

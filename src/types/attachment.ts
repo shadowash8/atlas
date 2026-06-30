@@ -1,10 +1,10 @@
 export interface Attachment {
     id: number;
 
-    artifactId: number;
+    artifactId: string;
 
     name: string;
     uri: string;
-    type: string;
+    type: "string";
     size: number;
 }

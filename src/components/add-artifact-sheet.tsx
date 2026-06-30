@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { BottomSheet, Button, Column, Host, Row } from "@expo/ui";
+import { BottomSheet, Button, Column, Row } from "@expo/ui";
 import { StyleSheet } from "react-native";
-
 import { ThemedText } from "@/components/themed-text";
 import { ThemedInput } from "./themed-input";
+import {
+    InputChip,
+    FlowRow,
+    Text,
+} from "@expo/ui/jetpack-compose";
 
 type AddArtifactSheetProps = {
     isPresented: boolean;
     onDismiss: () => void;
-    onSave: (title: string, description: string) => Promise<void>;
+    onSave: (
+        title: string,
+        description: string,
+        tags: string[]
+    ) => Promise<void>;
 };
 
 export default function AddArtifactSheet({
@@ -18,12 +26,34 @@ export default function AddArtifactSheet({
 }: AddArtifactSheetProps) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [tagInput, setTagInput] = useState("");
+    const [tags, setTags] = useState<string[]>([]);
+
+    function addTag(raw: string) {
+        const tag = raw.trim().toLowerCase();
+
+        if (!tag) return;
+        if (tags.includes(tag)) return;
+
+        setTags(prev => [...prev, tag]);
+        setTagInput("");
+    }
+
+    function removeTag(tag: string) {
+        setTags(prev => prev.filter(t => t !== tag));
+    }
 
     async function handleSave() {
         if (!title.trim()) return;
 
-        await onSave(title.trim(), description.trim());
+        await onSave(
+            title.trim(),
+            description.trim(),
+            tags
+        );
 
+        setTags([]);
+        setTagInput("");
         setTitle("");
         setDescription("");
 
@@ -63,6 +93,38 @@ export default function AddArtifactSheet({
                     containerStyle={styles.textareaContainer}
                     inputStyle={styles.textareaInput}
                 />
+
+
+                <ThemedInput
+                    placeholder="Tags (space or comma to add)"
+                    value={tagInput}
+                    onChangeText={(text) => {
+                        const last = text.at(-1);
+
+                        if (last === " " || last === ",") {
+                            addTag(text.slice(0, -1));
+                            return;
+                        }
+
+                        setTagInput(text);
+                    }}
+                    onSubmitEditing={() => addTag(tagInput)}
+                />
+                {tags.length > 0 && (
+                    <FlowRow horizontalArrangement={{ spacedBy: 8 }}>
+                        {tags.map(tag => (
+                            <InputChip
+                                key={tag}
+                                selected
+                                onClick={() => removeTag(tag)}
+                            >
+                                <InputChip.Label>
+                                    <Text>{tag}</Text>
+                                </InputChip.Label>
+                            </InputChip>
+                        ))}
+                    </FlowRow>
+                )}
 
                 <Row spacing={8}>
                     <Button

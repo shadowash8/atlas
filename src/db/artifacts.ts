@@ -5,21 +5,31 @@ import { generateArtifactId } from "@/hooks/crypto";
 export async function createArtifact(
     db: SQLiteDatabase,
     title: string,
-    description = ""
+    description = "",
+    tags: string[] = []
 ) {
     const now = new Date().toISOString();
     const uniqueId = generateArtifactId();
-    console.log(uniqueId)
 
     await db.runAsync(
         `
-      INSERT INTO artifacts
-      (id, title, description, created_at, updated_at, favorite, color)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `,
+        INSERT INTO artifacts
+        (
+            id,
+            title,
+            description,
+            tags,
+            created_at,
+            updated_at,
+            favorite,
+            color
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `,
         uniqueId,
         title,
         description,
+        JSON.stringify(tags),
         now,
         now,
         0,
@@ -37,6 +47,7 @@ export async function getArtifacts(
       id,
       title,
       description,
+      tags,
       created_at AS createdAt,
       updated_at AS updatedAt,
       favorite,
@@ -49,6 +60,7 @@ export async function getArtifacts(
         ...row,
         id: String(row.id),
         favorite: Boolean(row.favorite),
+        tags: JSON.parse(row.tags ?? "[]"),
     }));
 }
 
@@ -62,6 +74,7 @@ export async function getArtifact(
         id,
         title,
         description,
+        tags,
         created_at AS createdAt,
         updated_at AS updatedAt,
         favorite,
@@ -79,17 +92,19 @@ export async function updateArtifact(
 ) {
     await db.runAsync(
         `
-      UPDATE artifacts
-      SET
+    UPDATE artifacts
+    SET
         title = ?,
         description = ?,
+        tags = ?,
         updated_at = ?,
         favorite = ?,
         color = ?
-      WHERE id = ?
+    WHERE id = ?
     `,
         artifact.title,
         artifact.description,
+        JSON.stringify(artifact.tags),
         new Date().toISOString(),
         artifact.favorite ? 1 : 0,
         artifact.color,
