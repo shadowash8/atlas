@@ -47,6 +47,7 @@ export default function SearchScreen() {
 
         return artifacts.filter(
             (artifact) =>
+                artifact.id.toLowerCase().includes(q) ||
                 artifact.title.toLowerCase().includes(q) ||
                 artifact.description.toLowerCase().includes(q)
         );
