@@ -89,7 +89,7 @@ export default function SearchScreen() {
                     data={filteredArtifacts}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        <ArtifactCard artifact={item} />
+                        <ArtifactCard artifact={item} refresh={() => { }} />
                     )}
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}
