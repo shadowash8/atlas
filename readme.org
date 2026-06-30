@@ -4,4 +4,5 @@
 
 | Home                              | Search                              |
 |-----------------------------------+-------------------------------------|
-| [[/assets/screenshots/page_home.png]] | [[/assets/screenshots/page_search.png]] |
+| [[/assets/screenshots/page_home.png]] |  [[/assets/screenshots/page_search.png]] |
+| [[/assets/screenshots/artifact_add.png]] | [[/assets/screenshots/artifact_edit.png]] |
