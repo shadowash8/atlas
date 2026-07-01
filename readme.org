@@ -1,6 +1,16 @@
 * Atlas
 
-*Atlas* is a all in one application to store and tag data for referencing
+Atlas is a lightweight application for storing snippets of information, links, notes, and references in one place. Every item is stored locally using SQLite, making the app fast, private, and available offline.
+
+** Features
+- Store artifacts with a title and description
+- Organize artifacts using tags
+- Instantly search by ID, title, description, or tags
+- Edit existing artifacts
+- Delete artifacts with confirmation
+- Automatically detect and open links inside descriptions
+- Built with Material 3 components and dynamic theming
+- Local SQLite database for offline storage
 
 | Home                              | Search                              |
 |-----------------------------------+-------------------------------------|
