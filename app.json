@@ -8,7 +8,8 @@
     "scheme": "atlas",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.shadowash8.atlas"
     },
     "android": {
       "adaptiveIcon": {
@@ -36,7 +37,11 @@
           }
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-font",
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
