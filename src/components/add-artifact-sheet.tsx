@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BottomSheet, Button, Column, Row } from "@expo/ui";
 import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/themed-text";
@@ -11,6 +11,7 @@ import {
 
 type AddArtifactSheetProps = {
     isPresented: boolean;
+    initialDescription?: string;
     onDismiss: () => void;
     onSave: (
         title: string,
@@ -21,6 +22,7 @@ type AddArtifactSheetProps = {
 
 export default function AddArtifactSheet({
     isPresented,
+    initialDescription,
     onDismiss,
     onSave,
 }: AddArtifactSheetProps) {
@@ -42,6 +44,32 @@ export default function AddArtifactSheet({
     function removeTag(tag: string) {
         setTags(prev => prev.filter(t => t !== tag));
     }
+
+    useEffect(() => {
+        if (isPresented && initialDescription) {
+            setDescription(initialDescription);
+
+            // Auto-extract origin application name to append as tag metadata
+            if (initialDescription.includes("youtube.com") || initialDescription.includes("youtu.be")) {
+                setTitle("YouTube Content Archive");
+                addTag("youtube");
+            } else if (initialDescription.includes("twitter.com") || initialDescription.includes("x.com")) {
+                setTitle("X Thread Post");
+                addTag("twitter");
+            } else if (initialDescription.startsWith("http")) {
+                setTitle("Web Bookmark Link");
+                addTag("web");
+            } else {
+                setTitle("Shared Memo Entry");
+                addTag("memos");
+            }
+        } else if (!isPresented) {
+            // Clear fields on layout teardown
+            setTitle("");
+            setDescription("");
+            setTagInput("");
+        }
+    }, [isPresented, initialDescription]);
 
     async function handleSave() {
         if (!title.trim()) return;

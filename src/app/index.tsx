@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedView } from '@/components/themed-view';
-import { Colors, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { useSQLiteContext } from "@/db/database";
 import { createArtifact, getArtifacts } from '@/db/artifacts';
 import Artifacts from '@/components/ui/artifacts';
@@ -11,18 +11,21 @@ import { useMaterialColors } from '@expo/ui/jetpack-compose';
 import { ThemedText } from '@/components/themed-text';
 import { Ionicons } from '@expo/vector-icons';
 import AddArtifactSheet from '@/components/add-artifact-sheet';
+import { useIncomingShare, clearSharedPayloads } from 'expo-sharing';
 
 export default function HomeScreen() {
     const db = useSQLiteContext();
     const colors = useMaterialColors();
 
+    const { resolvedSharedPayloads } = useIncomingShare();
+
     const [artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [refreshing, setRefreshing] = useState(false);
     const [sheetOpen, setSheetOpen] = useState(false);
+    const [sharedContent, setSharedContent] = useState<string | undefined>(undefined);
 
     async function refresh() {
         setRefreshing(true);
-
         try {
             setArtifacts(await getArtifacts(db));
         } finally {
@@ -33,6 +36,29 @@ export default function HomeScreen() {
     useEffect(() => {
         refresh();
     }, []);
+
+    // 4. Watch for incoming shared payloads directly in this view context
+    useEffect(() => {
+        const payload = resolvedSharedPayloads?.[0];
+
+        if (!payload) return;
+
+        // create a stable fingerprint for deduping
+        const id = payload.contentUri ?? payload.value;
+
+        if (!id) return;
+
+        if (payload.contentType === 'text' || payload.contentType === 'website') {
+            const value = payload.value?.trim();
+
+            if (value) {
+                setSharedContent(value);
+                setSheetOpen(true);
+
+                clearSharedPayloads();
+            }
+        }
+    }, [resolvedSharedPayloads]);
 
     return (
         <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -49,6 +75,7 @@ export default function HomeScreen() {
                 <AddArtifactSheet
                     isPresented={sheetOpen}
                     onDismiss={() => setSheetOpen(false)}
+                    initialDescription={sharedContent}
                     onSave={async (title, description, tags) => {
                         await createArtifact(db, title, description, tags);
                         await refresh();

@@ -1,7 +1,7 @@
 import { Platform, StyleSheet, Text, type TextProps } from 'react-native';
 import { useMaterialColors } from '@expo/ui/jetpack-compose';
 import { Fonts } from '@/constants/theme';
-import type { MaterialColorType } from './themed-view'; // Reusing our clean palette keys mapper
+import type { MaterialColorType } from './themed-view';
 
 export type ThemedTextProps = TextProps & {
     type?: 'default' | 'title' | 'small' | 'smallBold' | 'subtitle' | 'link' | 'linkPrimary' | 'code';

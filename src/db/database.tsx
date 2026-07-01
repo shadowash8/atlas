@@ -1,5 +1,3 @@
-// src/db/database.ts
-
 import { SQLiteProvider } from "expo-sqlite";
 
 import { migrateDbIfNeeded } from "./migrations";

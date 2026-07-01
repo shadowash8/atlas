@@ -41,7 +41,17 @@
       "expo-font",
       "expo-image",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-sharing",
+        {
+          "android": {
+            "enabled": true,
+            "singleShareMimeTypes": ["text/plain"],
+            "multipleShareMimeTypes": ["text/plain"]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
