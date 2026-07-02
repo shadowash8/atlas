@@ -6,6 +6,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedInput } from "./themed-input";
 import { Artifact } from "@/types/artifact";
 import { FlowRow, InputChip, Text } from "@expo/ui/jetpack-compose";
+import { Spacing } from "@/constants/theme";
 
 type EditArtifactSheetProps = {
     passedArtifact: Artifact | null;
@@ -66,9 +67,8 @@ export default function EditArtifactSheet({
         <BottomSheet
             isPresented={isPresented}
             onDismiss={onDismiss}
-            snapPoints={["half"]}
         >
-            <Column spacing={8}>
+            <Column spacing={8} style={{ paddingBottom: Spacing.three }}>
                 <ThemedText type="subtitle">
                     Edit Artifact #{passedArtifact?.id}
                 </ThemedText>

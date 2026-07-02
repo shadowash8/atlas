@@ -8,6 +8,7 @@ import {
     FlowRow,
     Text,
 } from "@expo/ui/jetpack-compose";
+import { Spacing } from "@/constants/theme"
 
 type AddArtifactSheetProps = {
     isPresented: boolean;
@@ -92,18 +93,13 @@ export default function AddArtifactSheet({
         <BottomSheet
             isPresented={isPresented}
             onDismiss={onDismiss}
-            snapPoints={["half"]}
         >
-
-            <Column spacing={8}>
+            <Column spacing={8} style={{ paddingBottom: Spacing.three }}>
                 <ThemedText type="subtitle">
                     New Artifact
                 </ThemedText>
 
-                <ThemedText
-                    themeColor="secondary"
-                    style={styles.description}
-                >
+                <ThemedText themeColor="secondary">
                     Save anything you want to remember later.
                 </ThemedText>
 
@@ -171,15 +167,6 @@ export default function AddArtifactSheet({
 }
 
 const styles = StyleSheet.create({
-    content: {
-        width: "100%",
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-        gap: 20,
-    },
-    description: {
-        marginTop: -8,
-    },
     textareaContainer: {
         minHeight: 120,
     },
