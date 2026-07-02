@@ -5,8 +5,7 @@ import { ThemedText } from "./themed-text";
 import { useMaterialColors } from "@expo/ui/jetpack-compose";
 import { Href } from "expo-router";
 
-const URL_REGEX =
-    /((?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?)/;
+const URL_REGEX = /((?:https?:\/\/|www\.)[^\s/$.?#].[^\s]*)/gi;
 
 type Props = {
     children: string;
@@ -25,7 +24,7 @@ export function LinkifiedText({
     return (
         <ThemedText type={type} numberOfLines={numberOfLines}>
             {parts.map((part, index) => {
-                if (!URL_REGEX.test(part)) {
+                if (!/^(?:https?:\/\/|www\.)/i.test(part)) {
                     return <Fragment key={index}>{part}</Fragment>;
                 }
 
