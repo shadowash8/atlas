@@ -9,6 +9,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import EditArtifactSheet from "./edit-artifact-sheet";
 import { LinkifiedText } from "./linkified-text";
 import { Host, InputChip, Text, FlowRow } from "@expo/ui/jetpack-compose";
+import { formatDate } from "@/hooks/date";
 
 type ArtifactCardProps = {
     artifact: Artifact;
@@ -66,7 +67,7 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                 </LinkifiedText>
 
                 <ThemedText type="small">
-                    {artifact.updatedAt}
+                    {formatDate(artifact.updatedAt)}
                 </ThemedText>
 
                 <EditArtifactSheet
@@ -91,29 +92,29 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                     />
                     <Button label="Delete" onPress={() => deleteItem()} variant="text" style={styles.listItem} />
                 </BottomSheet>
-            </Pressable>
 
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            >
-                {artifact.tags.length > 0 && (
-                    <Host matchContents>
-                        <FlowRow horizontalArrangement={{ spacedBy: 8 }}>
-                            {artifact.tags.map(tag => (
-                                <InputChip
-                                    key={tag}
-                                    selected
-                                >
-                                    <InputChip.Label>
-                                        <Text>{tag}</Text>
-                                    </InputChip.Label>
-                                </InputChip>
-                            ))}
-                        </FlowRow>
-                    </Host>
-                )}
-            </ScrollView>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {artifact.tags.length > 0 && (
+                        <Host matchContents>
+                            <FlowRow horizontalArrangement={{ spacedBy: 8 }}>
+                                {artifact.tags.map(tag => (
+                                    <InputChip
+                                        key={tag}
+                                        selected
+                                    >
+                                        <InputChip.Label>
+                                            <Text>{tag}</Text>
+                                        </InputChip.Label>
+                                    </InputChip>
+                                ))}
+                            </FlowRow>
+                        </Host>
+                    )}
+                </ScrollView>
+            </Pressable>
         </ThemedView>
     );
 }
