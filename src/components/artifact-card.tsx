@@ -66,10 +66,6 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                     {artifact.description}
                 </LinkifiedText>
 
-                <ThemedText type="small">
-                    {formatDate(artifact.updatedAt)}
-                </ThemedText>
-
                 <EditArtifactSheet
                     isPresented={editSheet}
                     onDismiss={() => setEditSheet(false)}
@@ -114,6 +110,10 @@ export function ArtifactCard({ artifact, refresh }: ArtifactCardProps) {
                         </Host>
                     )}
                 </ScrollView>
+
+                <ThemedText type="small">
+                    {formatDate(artifact.updatedAt)}
+                </ThemedText>
             </Pressable>
         </ThemedView>
     );
